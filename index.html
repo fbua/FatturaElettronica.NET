@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Fattura Elettronica by FatturaElettronicaPA</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Fattura Elettronica</h1>
+        <h2>Fattura Elettronica Open Source</h2>
+        <a href="https://github.com/FatturaElettronicaPA/FatturaElettronicaPA" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="fattura-elettronica-per-la-pubblica-amministrazione" class="anchor" href="#fattura-elettronica-per-la-pubblica-amministrazione" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fattura Elettronica per la Pubblica Amministrazione</h1>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Lettura e scrittura nel <a href="http://www.fatturapa.gov.it/export/fatturazione/sdi/Specifiche_tecniche_del_formato_FatturaPA_V1.1.pdf">formato standard v1.1 PA</a> (XML).</li>
+<li>Convalida in osservanza delle specifiche tecniche ufficiali.</li>
+<li>Supporto per la serializzazione in formato JSON</li>
+</ul>
+
+<h2>
+<a id="esempio" class="anchor" href="#esempio" aria-hidden="true"><span class="octicon octicon-link"></span></a>Esempio</h2>
+
+<div class="highlight highlight-cs"><pre>    <span class="pl-c">// instanzia una nuova fattura elettronica</span>
+    FatturaElettronica fattura = <span class="pl-s">new</span> FatturaElettronica();
+
+    <span class="pl-c">// lettura da file XML compatibile con formato SDI1.1</span>
+    <span class="pl-k">var</span> s = <span class="pl-s">new</span> XmlReaderSettings {IgnoreWhitespace = <span class="pl-c1">true</span>};
+    <span class="pl-k">var</span> r = XmlReader.Create(<span class="pl-s1"><span class="pl-pds">"</span>IT01234567890_11111.xml<span class="pl-pds">"</span></span>, s);
+    fattura.ReadXml(r);
+
+    <span class="pl-c">// convalida documento</span>
+    <span class="pl-k">if</span> (!fattura.IsValid) {
+        Debug.WriteLine(fattura.Error);
+    }
+
+    <span class="pl-c">// serializzazione JSON</span>
+    <span class="pl-k">var</span> json = fattura.ToJson(JsonOptions.Indented);
+    Debug.WriteLine(json);
+
+    <span class="pl-c">// modifica valore</span>
+    fattura.FatturaElettronicaHeader.CedentePrestatore.DatiAnagrafici.RegimeFiscale = <span class="pl-s1"><span class="pl-pds">"</span>RF11<span class="pl-pds">"</span></span>;
+
+    <span class="pl-c">// serializzazione XML secondo lo standard SDI 1.1</span>
+    <span class="pl-k">var</span> s = <span class="pl-s">new</span> XmlWriterSettings { Indent = <span class="pl-c1">true</span> };
+
+    XmlWriter w;
+    <span class="pl-k">using</span> (w = XmlWriter.Create(<span class="pl-s1"><span class="pl-pds">"</span>IT01234567890_11111.xml<span class="pl-pds">"</span></span>, s)) {
+        fattura.WriteXml(w);
+    }</pre></div>
+
+<h2>
+<a id="portable-class-library" class="anchor" href="#portable-class-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>Portable Class Library</h2>
+
+<p>La libreria gira senza modifiche sui seguenti ambienti:</p>
+
+<ul>
+<li>.NET Framework 4.0 e superiori,</li>
+<li>Xamarin.iOS</li>
+<li>Xamarin.Android</li>
+<li>Windows Phone 8</li>
+<li>Windows Store apps (Windows 8)</li>
+<li>Silverlight 5.0</li>
+</ul>
+
+<p>Un file .snk è fornito per la firma dell'assembly, in modo che possa essere usato in contesti in cui lo <em>strong naming</em> sia necessario.</p>
+
+<h2>
+<a id="installazione" class="anchor" href="#installazione" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installazione</h2>
+
+<p>FatturaElettronicaPA è su <a href="https://www.nuget.org/packages/FatturaElettronicaPA/">NuGet</a> quindi tutto quel che serve è eseguire:</p>
+
+<pre><code>    PM&gt; Install-Package FatturaElettronicaPA
+</code></pre>
+
+<p>dalla Package Console, oppure usare il comando equivalente in Visual Studio.</p>
+
+<h2>
+<a id="dipendenze" class="anchor" href="#dipendenze" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dipendenze</h2>
+
+<p>L'unica dipendenza è il progetto <a href="http://github.com/FatturaElettronicaPA/BusinessObjects">BusinessObjects</a>, anch'esso reperibile su GitHub. </p>
+
+<h2>
+<a id="licenza" class="anchor" href="#licenza" aria-hidden="true"><span class="octicon octicon-link"></span></a>Licenza</h2>
+
+<p>FatturaElettronicaPA è un progetto open source <a href="http://gestionaleamica.com">Gestionale Amica</a> rilasciato sotto licenza <a href="http://github.com/FatturaElettronicaPA/FatturaElettronicaPA/blob/master/LICENSE">BSD</a>.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/FatturaElettronicaPA/FatturaElettronicaPA/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/FatturaElettronicaPA/FatturaElettronicaPA/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/FatturaElettronicaPA/FatturaElettronicaPA"></a> is maintained by <a href="https://github.com/FatturaElettronicaPA">FatturaElettronicaPA</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
