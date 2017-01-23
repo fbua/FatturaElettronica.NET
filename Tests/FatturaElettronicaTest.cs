@@ -3,6 +3,9 @@ using System.Xml;
 using System.IO;
 using FatturaElettronica.Impostazioni;
 using System;
+using FatturaElettronica.Validators;
+using FluentValidation.TestHelper;
+using FluentValidation;
 
 namespace Tests
 {
@@ -325,6 +328,5 @@ namespace Tests
             dl.AliquotaIVA = 22.0m;
             Assert.IsTrue(dl.IsValid);
         }
-
     }
 }
