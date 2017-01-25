@@ -9,7 +9,7 @@ using FluentValidation;
 
 namespace Tests
 {
-    [TestClass]
+    [TestClass][Ignore]
     public class FatturaElettronicaTest
     {
         [TestMethod]
