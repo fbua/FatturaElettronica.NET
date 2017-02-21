@@ -59,7 +59,7 @@ namespace FatturaElettronica.FatturaElettronicaBody.DatiBeniServizi
 
                 if (sconto.Importo == null && sconto.Percentuale == null) continue;
 
-                var importo = (decimal)((sconto.Importo > 0) ?  sconto.Importo : (prezzo * sconto.Percentuale) / 100);
+                var importo = (decimal)((sconto.Importo != null && sconto.Importo != 0) ?  Math.Abs((decimal)sconto.Importo) : (prezzo * sconto.Percentuale) / 100);
 
                 if (sconto.Tipo == "SC")
                     prezzo -= importo;
@@ -67,7 +67,7 @@ namespace FatturaElettronica.FatturaElettronicaBody.DatiBeniServizi
                     prezzo += importo;
 
             }
-            return Math.Round(PrezzoTotale, 2) == Math.Round((decimal)(prezzo * ((Quantita != null) ? Quantita : 1)), 2);
+            return PrezzoTotale == Math.Round((decimal)(prezzo * ((Quantita != null) ? Quantita : 1)), 2, MidpointRounding.AwayFromZero);
         }
 
 		/// <summary>
